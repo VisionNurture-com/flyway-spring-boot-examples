@@ -1,0 +1,39 @@
+# 010 sec01 検証用: red-gate/setup-flyway@v3 で Flyway CLI をランナーへ導入し
+# PostgreSQL に対して validate → migrate を実行する基本ワークフロー（nektos/act で実機検証）。
+name: Flyway setup-flyway@v3 Demo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Setup Flyway
+        uses: red-gate/setup-flyway@v3
+        with:
+          edition: community
+          i-agree-to-the-eula: true
+
+      - name: Flyway version
+        run: flyway --version
+
+      - name: Validate and Migrate
+        run: |
+          flyway validate -ignoreMigrationPatterns='*:pending'
+          flyway migrate
+        env:
+          FLYWAY_URL: jdbc:postgresql://pg010:5432/appdb
+          FLYWAY_USER: postgres
+          FLYWAY_PASSWORD: postgres
+          FLYWAY_LOCATIONS: filesystem:db/010-actions-migration
+          FLYWAY_CONNECT_RETRIES: 20

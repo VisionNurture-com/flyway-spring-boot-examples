@@ -1,0 +1,32 @@
+# 010 sec02 検証用: flyway.toml の環境別設定と matrix を組み合わせた
+# マルチ環境デプロイ。max-parallel: 1 で staging → production の順序実行を保証する。
+name: Flyway Multi-Environment Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  migrate:
+    strategy:
+      max-parallel: 1
+      matrix:
+        environment: [staging, production]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Show target environment
+        run: echo "Deploying to ${{ matrix.environment }}"
+      - uses: red-gate/setup-flyway@v3
+        with:
+          edition: community
+          i-agree-to-the-eula: true
+      - name: Run Migration
+        run: |
+          flyway migrate \
+            -environment="${{ matrix.environment }}" \
+            -environments.${{ matrix.environment }}.password="${{ secrets.DB_PASSWORD }}"

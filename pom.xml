@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.example</groupId>
+    <artifactId>flyway-beginner-demo</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>flyway-beginner-demo</name>
+    <description>Flyway + Spring Boot 4.1 + Java 25 ハンズオン用サンプルプロジェクト（記事シリーズ伴走・Maven/Gradle 両対応）</description>
+
+    <properties>
+        <java.version>25</java.version>
+        <!-- SB4.1.0 BOM 既定は Flyway 12.4.0。最新版追従のため 12.8.1 へ明示 override -->
+        <flyway.version>12.8.1</flyway.version>
+    </properties>
+
+    <dependencies>
+        <!-- SB4 破壊的変更 #1: flyway-core 単体では自動構成されない → starter が必須 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <!-- sec05 JPA 連携検証: ddl-auto=validate が Flyway 構築スキーマと共存することを実機確認（SB4/Hibernate 7） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- 003/004: Flyway CLI コマンド（flyway:info/validate/repair/migrate）を Maven から実行。
+                 CLI は永続DBが要るため file ベース H2 を参照（bootRun 経路は in-mem のまま）。 -->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <url>jdbc:h2:file:./data/testdb</url>
+                    <user>sa</user>
+                    <password></password>
+                    <locations>filesystem:src/main/resources/db/migration</locations>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>2.4.240</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>

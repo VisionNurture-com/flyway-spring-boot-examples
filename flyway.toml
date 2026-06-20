@@ -1,0 +1,30 @@
+# flyway.toml — 005 検証用（flyway CLI で environments / placeholders を実機確認）
+# Spring Boot の db/migration を汚さないよう、CLI 専用の db/toml-migration を参照する。
+[flyway]
+locations = ["filesystem:db/toml-migration"]
+
+# 開発環境
+[environments.development]
+url = "jdbc:h2:file:./data/tomldb-dev"
+user = "sa"
+password = ""
+
+[environments.development.flyway]
+cleanDisabled = false
+
+[environments.development.flyway.placeholders]
+audit_table = "audit_log_dev"
+retention_days = "7"
+
+# テスト環境
+[environments.test]
+url = "jdbc:h2:file:./data/tomldb-test"
+user = "sa"
+password = ""
+
+[environments.test.flyway]
+cleanDisabled = false
+
+[environments.test.flyway.placeholders]
+audit_table = "audit_log_test"
+retention_days = "30"

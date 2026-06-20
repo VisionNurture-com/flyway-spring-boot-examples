@@ -1,0 +1,25 @@
+# Build output
+build/
+target/
+out/
+bin/
+
+# Gradle
+.gradle/
+
+# Maven wrapper downloads
+.mvn/wrapper/maven-wrapper.jar
+
+# Flyway CLI demo の永続 H2（file ベース）
+data/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
