@@ -17,10 +17,11 @@ group = "com.example"
 version = "0.0.1-SNAPSHOT"
 
 // Flyway Gradle プラグインの設定（標準 CLI コマンド用）。
-// CLI は bootRun と別プロセスで起動するため、適用状態を保持できる file ベース H2 を参照する
+// コマンドごとに接続が閉じても適用状態が残るよう、file ベース H2 を参照する
 // （bootRun 経路は application.properties の in-mem H2 のまま・記事002 と整合）。
+// パスは ${projectDir} から書く。相対パスは Gradle デーモンの作業フォルダ（~/.gradle/daemon/<版>/）を基準に解決されるため。
 flyway {
-    url = "jdbc:h2:file:./data/testdb"
+    url = "jdbc:h2:file:${projectDir}/data/testdb"
     user = "sa"
     password = ""
     locations = arrayOf("filesystem:src/main/resources/db/migration")

@@ -33,7 +33,7 @@ dependencies {
 }
 
 flyway {
-    url = "jdbc:h2:file:./data/testdb"
+    url = "jdbc:h2:file:${projectDir}/data/testdb"
     user = "sa"
     password = ""
     cleanDisabled = false
