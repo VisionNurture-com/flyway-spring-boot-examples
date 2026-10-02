@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
@@ -25,7 +25,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class ConcurrentIndexTest {
 
     @Container
-    private final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:18-alpine");
+    private final PostgreSQLContainer postgres = new PostgreSQLContainer("postgres:18-alpine");
 
     // negative: 明示トランザクション内（autoCommit=false）では CONCURRENTLY が即座に拒否される。
     @Test

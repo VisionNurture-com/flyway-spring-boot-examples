@@ -1,10 +1,12 @@
 # 010 sec02 検証用: flyway.toml の環境別設定と matrix を組み合わせた
 # マルチ環境デプロイ。max-parallel: 1 で staging → production の順序実行を保証する。
+# 実行には、接続できる staging / production の DB と、flyway.toml の
+# [environments.staging] / [environments.production]、Secrets の DB_PASSWORD が要る。
+# このリポジトリにはそれらが無いため、push では動かさず手動実行（workflow_dispatch）に限る。
 name: Flyway Multi-Environment Deploy
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   migrate:
@@ -13,6 +15,7 @@ jobs:
       matrix:
         environment: [staging, production]
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5

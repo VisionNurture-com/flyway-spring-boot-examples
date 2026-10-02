@@ -1,0 +1,21 @@
+# 記事 005 のテスト（プロファイル・Testcontainers・clean の禁止・lock_timeout）を実行する。
+# Testcontainers が PostgreSQL のコンテナを起動するため、Docker のある ubuntu-latest で動かす。
+name: 005 Profiles and Testcontainers
+
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: 005-profiles-testcontainers
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Test
+        run: ./gradlew test

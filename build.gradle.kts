@@ -7,10 +7,10 @@ buildscript {
 
 plugins {
     java
-    id("org.springframework.boot") version "4.1.0"
+    id("org.springframework.boot") version "4.1.1"
     id("io.spring.dependency-management") version "1.1.7"
     // 003/004: Flyway CLI コマンド（flywayInfo/Validate/Repair/Migrate）を Gradle から実行
-    id("org.flywaydb.flyway") version "12.8.1"
+    id("org.flywaydb.flyway") version "12.11.0"
 }
 
 group = "com.example"
@@ -36,8 +36,8 @@ repositories {
     mavenCentral()
 }
 
-// SB4.1.0 BOM 既定は Flyway 12.4.0。最新版追従のため 12.8.1 へ明示 override
-extra["flyway.version"] = "12.8.1"
+// Spring Boot 4.1.1 の依存管理が決める Flyway は 12.4.0。12.x の最新 12.11.0 を使うため版を上書きする
+extra["flyway.version"] = "12.11.0"
 
 dependencies {
     // SB4 破壊的変更 #1: flyway-core 単体では自動構成されない → starter が必須

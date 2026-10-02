@@ -3,7 +3,7 @@ package com.example.hibval;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 /**
  * 010 sec04 FAQ: Testcontainers の withReuse(true) API が Testcontainers 2.0.5 で有効に機能し、
@@ -15,8 +15,8 @@ class TestcontainersReuseTest {
 
     @Test
     void reusableContainerStartsAndConnects() {
-        try (PostgreSQLContainer<?> pg =
-                 new PostgreSQLContainer<>("postgres:18-alpine").withReuse(true)) {
+        try (PostgreSQLContainer pg =
+                 new PostgreSQLContainer("postgres:18-alpine").withReuse(true)) {
             pg.start();
             assertThat(pg.isRunning()).isTrue();
             assertThat(pg.getJdbcUrl()).startsWith("jdbc:postgresql://");
