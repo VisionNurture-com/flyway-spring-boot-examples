@@ -2,6 +2,12 @@
 buildscript {
     dependencies {
         classpath("com.h2database:h2:2.4.240")
+        // 008 の MySQL / 009 の Oracle に Gradle プラグインからつなぐときの DB 対応モジュールと JDBC ドライバ。
+        // buildscript には Spring Boot の BOM が効かないため、BOM と同じ版を書く
+        classpath("org.flywaydb:flyway-mysql:12.11.0")
+        classpath("com.mysql:mysql-connector-j:9.7.0")
+        classpath("org.flywaydb:flyway-database-oracle:12.11.0")
+        classpath("com.oracle.database.jdbc:ojdbc11:23.26.3.0.0")
     }
 }
 
